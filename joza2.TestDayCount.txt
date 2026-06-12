@@ -1,0 +1,7 @@
+test_daycount (__main__.TestDayCount.test_daycount)
+given a start  and end date, returns number of weekends ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.009s
+
+OK

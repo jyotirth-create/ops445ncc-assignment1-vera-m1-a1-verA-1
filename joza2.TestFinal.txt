@@ -1,0 +1,13 @@
+test_arg_length (__main__.TestFinal.test_arg_length)
+when args != 2, output contains usage ... ok
+test_invalid_date (__main__.TestFinal.test_invalid_date)
+output contains usage when bad date ... ok
+test_weekends_with_proper_order (__main__.TestFinal.test_weekends_with_proper_order)
+output contains 'X weekend days' w/ dates in correct order ... ok
+test_weekends_with_reversed_order (__main__.TestFinal.test_weekends_with_reversed_order)
+output contains 'X weekend days'  w/ dates reversed ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.492s
+
+OK

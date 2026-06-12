@@ -34,20 +34,6 @@ def day_of_week(year: int, month: int, date: int) -> str:
     return days[num]
 
 
-def leap_year(year: int) -> bool:
-    "return True if the year is a leap year"
-    if year % 400 == 0:
-        return True
-
-    if year % 100 == 0:
-        return False
-
-    if year % 4 == 0:
-        return True
-
-    return False
-
-
 def mon_max(month: int, year: int) -> int:
     "returns the maximum day for a given month. Includes leap year check"
     if month == 2:
@@ -80,22 +66,22 @@ def after(date: str) -> str:
     This function takes care of the number of days in February for leap year.
     This fucntion has been tested to work for year after 1582
     '''
-    str_year, str_month, str_day = date.split('-')  # split the date so each part can be used separately
-    year = int(str_year)                            # change year into a number for calculations
-    month = int(str_month)                          # change month into a number to check month limits
-    day = int(str_day)                              # change day into a number so one day can be added
+    str_year, str_month, str_day = date.split('-')  # split the date into year, month, and day
+    year = int(str_year)                            # convert year so it can be used for math
+    month = int(str_month)                          # convert month so it can be checked
+    day = int(str_day)                              # convert day so one day can be added
 
-    tmp_day = day + 1  # move to the next day first
+    tmp_day = day + 1  # move forward by one day first
 
     if tmp_day > mon_max(month, year):
-        to_day = 1  # if the month is finished, restart the day at 1
+        to_day = 1  # if the date passed the month limit, restart at day 1
         tmp_month = month + 1
     else:
         to_day = tmp_day
         tmp_month = month
 
     if tmp_month > 12:
-        to_month = 1  # after December, move back to January
+        to_month = 1  # after December, the next month becomes January
         year = year + 1
     else:
         to_month = tmp_month
@@ -111,6 +97,19 @@ def usage():
     sys.exit(1)
 
 
+def leap_year(year: int) -> bool:
+    "return True if the year is a leap year"
+    if year % 400 == 0:
+        return True
+
+    if year % 100 == 0:
+        return False
+
+    if year % 4 == 0:
+        return True
+
+    return False
+
 def valid_date(date: str) -> bool:
     "check validity of date and return True if valid"
     if len(date) != 10:
@@ -121,6 +120,7 @@ def valid_date(date: str) -> bool:
 
     str_year, str_month, str_day = date.split('-')
 
+    # These checks stop the program from crashing when letters are entered.
     if not str_year.isdigit():
         return False
 
@@ -134,17 +134,14 @@ def valid_date(date: str) -> bool:
     month = int(str_month)
     day = int(str_day)
 
-    if year <= 1582:
-        return False
-
     if month < 1 or month > 12:
         return False
 
+    # This catches bad dates like 2023-02-31 or 2023-04-31.
     if day < 1 or day > mon_max(month, year):
         return False
 
     return True
-
 
 def day_count(start_date: str, stop_date: str) -> int:
     "Loops through range of dates, and returns number of weekend days"
@@ -163,6 +160,7 @@ def day_count(start_date: str, stop_date: str) -> int:
         if week_day == 'sat' or week_day == 'sun':
             weekend_days = weekend_days + 1
 
+        # after() is used here so the loop checks every date in the range.
         current_date = after(current_date)
 
     return weekend_days
@@ -178,7 +176,7 @@ if __name__ == "__main__":
     if not valid_date(first_date) or not valid_date(second_date):
         usage()
 
-    # Dates are written as YYYY-MM-DD, so comparing them as strings works safely here.
+    # YYYY-MM-DD dates can be compared as strings because the biggest part comes first.
     if first_date <= second_date:
         start_date = first_date
         stop_date = second_date
